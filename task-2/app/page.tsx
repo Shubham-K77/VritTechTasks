@@ -70,8 +70,8 @@ export default function Home() {
         <div className="w-full space-y-6">
           {/* Text and Icon */}
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
-              <Users className="w-6 h-6 text-blue-500" />
+            <h2 className="text-xl font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <Users className="w-5 h-5 text-blue-500" />
               Find Users
             </h2>
             <p className="text-gray-500 text-sm">
