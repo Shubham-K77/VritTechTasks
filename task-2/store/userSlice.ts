@@ -18,6 +18,11 @@ const userSlice = createSlice({
     },
   },
 });
+//Selector
+export const selectUserById =
+  (id: number) => (state: { users: UsersState }) => {
+    return state.users.users.find((user) => user.id === id);
+  };
 //Export
-export const {setUsers} = userSlice.actions;
+export const { setUsers } = userSlice.actions;
 export default userSlice.reducer;

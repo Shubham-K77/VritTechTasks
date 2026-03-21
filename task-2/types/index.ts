@@ -12,5 +12,15 @@ type QueryData<T> = {
   data: T | null;
 };
 type QueryFn<T> = () => Promise<QueryData<T>>;
-
-export type { userData, QueryData, QueryFn };
+type postData = {
+  id: number;
+  title: string;
+  body: string;
+  tags: string[];
+  reactions: {
+    dislikes: number,
+    likes: number
+  };
+  views: number;
+}
+export type { userData, QueryData, QueryFn, postData };
