@@ -4,7 +4,7 @@ import { userData } from "@/types";
 //Function
 const fetchUsers = async () => {
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "https://dummyjson.com";
-  const res = await fetch(`${BASE_URL}/users/?limit=10`, {
+  const res = await fetch(`${BASE_URL}/users/?limit=50`, {
     cache: "no-store",
   });
   if (!res.ok) {

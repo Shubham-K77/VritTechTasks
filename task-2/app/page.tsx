@@ -18,6 +18,8 @@ export default function Home() {
   //Hook
   const { data, loading, error } = useFetch<userData[]>(fetchUsers);
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const items_per_page = 6;
   //Store Into Redux
   useEffect(() => {
     if (data) {
@@ -37,6 +39,15 @@ export default function Home() {
       return fullName.includes(query) || email.includes(query);
     });
   }, [users, searchQuery]);
+  //Pagination Logic
+  const totalPages = useMemo(
+    () => Math.ceil(filteredUsers.length / items_per_page),
+    [filteredUsers.length, items_per_page],
+  );
+  const paginatedUsers = useMemo(() => {
+    const start = (currentPage - 1) * items_per_page;
+    return filteredUsers.slice(start, start + items_per_page);
+  }, [currentPage, items_per_page, filteredUsers]);
   //Loading And Error States
   if (loading) {
     return (
@@ -85,7 +96,10 @@ export default function Home() {
                 type="text"
                 placeholder="Search by name or email..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="bg-transparent text-gray-900 placeholder:text-gray-400 border-0 focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 w-full font-medium"
               />
               <div className="shrink-0 p-2 rounded-lg bg-blue-50 hover:bg-blue-100 transition-all duration-300 hover:cursor-pointer">
@@ -101,6 +115,10 @@ export default function Home() {
               <p className="text-gray-600 text-sm">
                 Showing{" "}
                 <span className="text-blue-600 font-semibold">
+                  {paginatedUsers.length}
+                </span>{" "}
+                of{" "}
+                <span className="text-blue-600 font-semibold">
                   {filteredUsers.length}
                 </span>{" "}
                 {searchQuery.trim() ? "results" : "users"}
@@ -111,7 +129,7 @@ export default function Home() {
         {/* Users Grid */}
         {filteredUsers.length > 0 ? (
           <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredUsers.map((user: userData) => (
+            {paginatedUsers.map((user: userData) => (
               <UserProfileCard key={user.id} data={user} />
             ))}
           </div>
@@ -124,6 +142,40 @@ export default function Home() {
                 Try adjusting your search query
               </p>
             </div>
+          </div>
+        )}
+        {/* Pagination Control */}
+        {totalPages > 1 && (
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:border-blue-400 hover:text-blue-500 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
+            >
+              Prev
+            </button>
+
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`w-9 h-9 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  currentPage === page
+                    ? "bg-blue-500 text-white shadow-md"
+                    : "border border-gray-200 text-gray-600 hover:border-blue-400 hover:text-blue-500"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+
+            <button
+              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:border-blue-400 hover:text-blue-500 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
+            >
+              Next
+            </button>
           </div>
         )}
       </div>

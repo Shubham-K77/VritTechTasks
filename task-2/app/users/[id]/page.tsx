@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 //Imports:
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUserById, setUsers } from "@/store/userSlice";
 import { setPosts } from "@/store/postSlice";
@@ -16,6 +16,7 @@ import PostInfoCard from "@/components/custom/postInfoCard";
 
 const Page = () => {
   const { id } = useParams();
+  const router = useRouter();
   const dispatch = useDispatch();
   const user = useSelector(selectUserById(Number(id)));
   const posts = useSelector((state: any) => state.posts.posts);
@@ -34,8 +35,10 @@ const Page = () => {
   }, [users, dispatch]);
   //Stores Posts Info
   useEffect(() => {
-    if (postsData) dispatch(setPosts(postsData));
-  }, [postsData, dispatch]);
+    if (postsData && posts.length === 0) {
+      dispatch(setPosts(postsData));
+    }
+  }, [postsData, dispatch, posts.length]);
   //Loading And Error
   if (loading) {
     return (
@@ -87,7 +90,15 @@ const Page = () => {
       {/* UserInfo Display */}
       <div className="w-[90%] max-w-7xl flex flex-col justify-start items-center gap-y-12 py-12 px-4">
         <UserInfoDisplay user={user} />
-
+        {/* Create Post Button */}
+        <div className="w-full flex justify-end">
+          <button
+            onClick={() => router.push(`/users/${id}/create`)}
+            className="px-6 py-3 bg-teal-700 text-white font-semibold rounded-lg hover:bg-teal-800 transition-colors duration-200"
+          >
+            Create Post
+          </button>
+        </div>
         {/* Posts Section */}
         <div className="w-full">
           <div className="mb-8">

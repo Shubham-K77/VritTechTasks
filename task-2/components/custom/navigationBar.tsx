@@ -16,7 +16,7 @@ const NavigationBar = ({ home, title }: NavigationBarProps) => {
         {/* Back Navigation Button */}
         {!home ? (
           <button
-            onClick={() => router.back()}
+            onClick={() => router.push("/")}
             className="group relative shrink-0 w-11 h-11 rounded-xl bg-white border border-gray-200 hover:border-gray-300 hover:bg-gray-50 flex justify-center items-center transition-all duration-300 hover:shadow-md hover:-translate-y-0.5"
           >
             <ArrowLeft className="w-5 h-5 text-gray-700 group-hover:text-blue-500 transition-colors duration-300 hover:cursor-pointer" />

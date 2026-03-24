@@ -18,9 +18,10 @@ type postData = {
   body: string;
   tags: string[];
   reactions: {
-    dislikes: number,
-    likes: number
+    dislikes: number;
+    likes: number;
   };
   views: number;
-}
-export type { userData, QueryData, QueryFn, postData };
+};
+type CreatePostData = Omit<postData, "id"> & { userId: number };
+export type { userData, QueryData, QueryFn, postData, CreatePostData };

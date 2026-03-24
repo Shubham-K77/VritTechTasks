@@ -1,5 +1,6 @@
 //Imports
 import { postData } from "@/types";
+import { CreatePostData } from "@/types";
 //Function
 const fetchPosts = async (id: number) => {
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "https://dummyjson.com";
@@ -28,5 +29,27 @@ const fetchPosts = async (id: number) => {
     data: posts,
   };
 };
+const createPost = async (postData: CreatePostData) => {
+  const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "https://dummyjson.com";
+  const res = await fetch(`${BASE_URL}/posts/add`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(postData),
+  });
+  if (!res.ok) {
+    return {
+      success: false,
+      message: "Unable to create post!",
+      data: null,
+    };
+  }
+  //Success
+  const createdPost = await res.json();
+  return {
+    success: true,
+    message: "Successfully Created New Post!",
+    data: createdPost,
+  };
+};
 //Export
-export { fetchPosts };
+export { fetchPosts, createPost };
