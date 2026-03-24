@@ -39,11 +39,13 @@ const DisplayCard = ({ cardKey }: { cardKey: CardKey }) => {
     >
       {/* Mobile */}
       <div className="flex flex-col items-center gap-y-4 p-4 lg:hidden">
-        <div className="relative w-[70%] h-50 overflow-hidden rounded-lg">
+        <div className="relative w-[70%] h-48 overflow-hidden rounded-lg">
           <Image
             src={card.image}
             alt={card.title}
             fill
+            sizes="(max-width: 1024px) 70vw, 40vw"
+            loading="eager"
             className="object-contain object-center transition-transform duration-500 group-hover:scale-110"
           />
         </div>
@@ -55,14 +57,13 @@ const DisplayCard = ({ cardKey }: { cardKey: CardKey }) => {
         {card.direction === "left" ? (
           <>
             <div className="col-span-2 relative overflow-hidden">
-              <div className="absolute bottom-0 left-0 w-full h-[130%] transition-transform duration-500 group-hover:scale-110">
-                <Image
-                  src={card.image}
-                  alt={card.title}
-                  fill
-                  className="object-contain object-bottom"
-                />
-              </div>
+              <Image
+                src={card.image}
+                alt={card.title}
+                fill
+                sizes="(max-width: 1024px) 70vw, 40vw"
+                className="object-contain object-left transition-transform duration-500 group-hover:scale-105"
+              />
             </div>
             <div className="col-span-3 flex flex-col justify-center pl-2 pr-6 py-6">
               {desktopText}
@@ -74,14 +75,13 @@ const DisplayCard = ({ cardKey }: { cardKey: CardKey }) => {
               {desktopText}
             </div>
             <div className="col-span-2 relative overflow-hidden">
-              <div className="absolute bottom-0 right-0 w-full h-[130%] transition-transform duration-500 group-hover:scale-110">
-                <Image
-                  src={card.image}
-                  alt={card.title}
-                  fill
-                  className="object-contain object-bottom"
-                />
-              </div>
+              <Image
+                src={card.image}
+                alt={card.title}
+                fill
+                sizes="(max-width: 1024px) 70vw, 40vw"
+                className="object-contain object-right transition-transform duration-500 group-hover:scale-105"
+              />
             </div>
           </>
         )}
